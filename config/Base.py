@@ -7,7 +7,7 @@ PORT = 6700
 
 DEBUG = True
 
-SUPERUSERS = { 2315903293 }
+SUPERUSERS = { }
 
 NICKNAME = {''}
 
