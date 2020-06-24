@@ -64,8 +64,6 @@ async def image_search(session: CommandSession):
     else:
         await err('无结果或请求达到限额，请过段时间或明日再试')
         return
-
-    print(results)
     
     if SMART:
         results = await smart(results)
