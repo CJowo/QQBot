@@ -1,14 +1,17 @@
 import os
+import logging
 
 import nonebot
+from nonebot.log import logger
 
-import config
+from config import Base
 
 
 if __name__ == '__main__':
-    nonebot.init(config)
+    nonebot.init(Base)
+    logger.setLevel(logging.WARNING)
     nonebot.load_plugins(
         os.path.join(os.path.dirname(__file__), 'plugins'),
         'plugins'
     )
-    nonebot.run(host='127.0.0.1', port=5000)
+    nonebot.run()

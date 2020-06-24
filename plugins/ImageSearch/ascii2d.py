@@ -5,12 +5,12 @@ import random
 import aiohttp
 from lxml import etree
 
-import config
+from config.ImageSearch import PROXY
 
 
-async def search(file, method='color'):
+async def search(file_path, method='color'):
     """
-    :param file: 待搜索的图片文件对象
+    :param file: 待搜索的图片文件路径
 
     :param method:
     
@@ -20,31 +20,37 @@ async def search(file, method='color'):
 
     `'all'` - 全部
 
-    :return: { img: 'image_uri', links: [ ( 'text', 'href' ), ... ] }
+    :return:
+    ```python
+    { ascii2d_color: { img: 'image_uri', links: [ ( 'text', 'href' ), ... ] }, ascii2d_bovw: { ... } }
+    ```
     """
-    multipartWriter = aiohttp.MultipartWriter('mixed')
-    multipartWriter.append(file, {'Content-Type': 'image/*'}) \
-        .set_content_disposition(
-            'form-data',
-            name='file',
-            filename=str(random.random())
-        )
-    headers = {"Content-Type": f"multipart/form-data;boundary={multipartWriter.boundary}"}
+    with open(file_path, 'rb') as file:
+        multipartWriter = aiohttp.MultipartWriter('mixed')
+        multipartWriter.append(file, {'Content-Type': 'image/*'}) \
+            .set_content_disposition(
+                'form-data',
+                name='file',
+                filename=str(random.random())
+            )
+        headers = {"Content-Type": f"multipart/form-data;boundary={multipartWriter.boundary}"}
 
-    async with aiohttp.ClientSession() as session:
-        async with session.post(
-                    url='https://ascii2d.net/search/file',
-                    data=multipartWriter,
-                    headers=headers,
-                    allow_redirects=False,
-                    proxy=config.PROXY) as resp:
-            location = resp.headers.get('location')
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                        url='https://ascii2d.net/search/file',
+                        data=multipartWriter,
+                        headers=headers,
+                        allow_redirects=False,
+                        proxy=PROXY) as resp:
+                location = resp.headers.get('location')
+            if location is None: return None
 
-        path = os.path.basename(location)
-        results = {}
-        for m in (method, ) if method != 'all' else ('color', 'bovw'):
-            async with session.get(url=f'https://ascii2d.net/search/{m}/{path}') as resp:
-                return await analyze(await resp.text())
+            path = os.path.basename(location)
+            results = {'ascii2d_color': None, 'ascii2d_bovw': None}
+            for m in (method, ) if method != 'all' else ('color', 'bovw'):
+                async with session.get(url=f'https://ascii2d.net/search/{m}/{path}', proxy=PROXY) as resp:
+                    results['ascii2d_'+m] = await analyze(await resp.text())
+            return results
 
 
 async def analyze(text):
@@ -57,6 +63,7 @@ async def analyze(text):
     links = [
         (i.xpath('./text()')[0], i.xpath('./@href')[0]) for i in a
     ]
+    if len(links) == 0: return None
     return {
         'img': img,
         'links': links
