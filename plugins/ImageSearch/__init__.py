@@ -39,11 +39,11 @@ async def image_search(session: CommandSession):
             results['saucenao'] = res
         except ClientConnectionError as err:
             logger.error(err)
-            await error('SauceNao请求失败，请过段时间再试')
+            await error(session, 'SauceNao请求失败，请过段时间再试')
             return
         except BaseException as err:
             logger.error(err)
-            await error('SauceNao出现异常，请联系管理员处理')
+            await error(session, 'SauceNao出现异常，请联系管理员处理')
             return
     if ASCII2D:
         try:
@@ -59,18 +59,18 @@ async def image_search(session: CommandSession):
             results.update(res)
         except ClientConnectionError as err:
             logger.error(err)
-            await error('Ascii2D请求失败，请过段时间再试')
+            await error(session, 'Ascii2D请求失败，请过段时间再试')
             return
         except BaseException as err:
             logger.error(err)
-            await error('Ascii2D出现异常，请联系管理员处理')
+            await error(session, 'Ascii2D出现异常，请联系管理员处理')
             return
 
     for key in results:
         if results[key] is not None:
             break
     else:
-        await err('无结果或请求达到限额，请过段时间或明日再试')
+        await err(session, '无结果或请求达到限额，请过段时间或明日再试')
         return
     
     if SMART:
