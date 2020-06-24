@@ -41,6 +41,10 @@ async def image_search(session: CommandSession):
             logger.error(err)
             await error('SauceNao请求失败，请过段时间再试')
             return
+        except BaseException as err:
+            logger.error(err)
+            await error('SauceNao出现异常，请联系管理员处理')
+            return
     if ASCII2D:
         try:
             cache = None
@@ -56,6 +60,10 @@ async def image_search(session: CommandSession):
         except ClientConnectionError as err:
             logger.error(err)
             await error('Ascii2D请求失败，请过段时间再试')
+            return
+        except BaseException as err:
+            logger.error(err)
+            await error('Ascii2D出现异常，请联系管理员处理')
             return
 
     for key in results:
