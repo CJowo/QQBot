@@ -121,8 +121,9 @@ async def smart(results):
     pass
     return results
 
-async def error(text):
+async def error(session: CommandSession, text):
     msg = Message()
     msg.append(MessageSegment.at(session.event.user_id))
+    msg.append(MessageSegment.text('运行时出现异常:\n'))
     msg.append(MessageSegment.text(text))
     await session.send(msg)
