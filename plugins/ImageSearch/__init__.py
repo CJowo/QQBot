@@ -129,4 +129,4 @@ async def error(session: CommandSession, text):
 
 async def url2base64(url):
     async with aiohttp.request('get', url, proxy=await PROXY()) as res:
-        return base64.b64encode(res.read()).decode()
+        return base64.b64encode(await res.read()).decode()
