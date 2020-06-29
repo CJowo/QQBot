@@ -37,7 +37,7 @@ async def search(file_path, api_key: str):
         headers = {"Content-Type": f"multipart/form-data;boundary={multipartWriter.boundary}"}
 
         async with aiohttp.ClientSession() as session:
-            async with session.post(url='https://saucenao.com/search.php', data=multipartWriter, headers=headers, proxy=PROXY()) as resp:
+            async with session.post(url='https://saucenao.com/search.php', data=multipartWriter, headers=headers, proxy=await PROXY()) as resp:
                 return await analyze(await resp.text())
 
 

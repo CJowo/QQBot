@@ -41,14 +41,14 @@ async def search(file_path, method='color'):
                         data=multipartWriter,
                         headers=headers,
                         allow_redirects=False,
-                        proxy=PROXY()) as resp:
+                        proxy=await PROXY()) as resp:
                 location = resp.headers.get('location')
             if location is None: return None
 
             path = os.path.basename(location)
             results = {'ascii2d_color': None, 'ascii2d_bovw': None}
             for m in (method, ) if method != 'all' else ('color', 'bovw'):
-                async with session.get(url=f'https://ascii2d.net/search/{m}/{path}', proxy=PROXY()) as resp:
+                async with session.get(url=f'https://ascii2d.net/search/{m}/{path}', proxy=await PROXY()) as resp:
                     results['ascii2d_'+m] = await analyze(await resp.text())
             return results
 
