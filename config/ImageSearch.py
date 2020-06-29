@@ -1,12 +1,12 @@
 # ImageSearch搜图配置
 
 """设置代理
-default: None
+default: `lambda: None`
 example:
-'http://proxy.com'
-'http://user:pass@some.proxy.com'
+`lambda: 'http://proxy.com'`
+`lambda: 'http://user:pass@some.proxy.com'`
 """
-PROXY = None
+PROXY = lambda: None
 
 
 """saucenaoAPI-KEY
