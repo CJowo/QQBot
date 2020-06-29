@@ -1,7 +1,9 @@
 import hashlib
 import json
+import base64
 
 from nonebot import on_command, CommandSession, logger
+import aiohttp
 from aiocqhttp.message import Message, MessageSegment
 from aiohttp.client_exceptions import ClientConnectionError
 
@@ -78,7 +80,7 @@ async def image_search(session: CommandSession):
         if SHOW_IMAGE:
             can_send_image = await session.bot.can_send_image()
             if can_send_image['yes']:
-                msg.append((MessageSegment.image(results[key]['img'])))
+                msg.append((MessageSegment.image('base64://' + await url2base64(results[key]['img']))))
                 msg.append((MessageSegment.text('\n')))
 
         data = results[key].get('data', {})
@@ -123,3 +125,8 @@ async def error(session: CommandSession, text):
     msg.append(MessageSegment.text('运行时出现异常:\n'))
     msg.append(MessageSegment.text(text))
     await session.send(msg)
+
+
+async def url2base64(url):
+    async with aiohttp.request('get', url, proxy=await PROXY()) as res:
+        return base64.b64encode(res.read()).decode()
