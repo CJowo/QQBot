@@ -9,7 +9,7 @@ async def notice(session: CommandSession):
     keywords = session.current_arg_text.strip()
 
     if keywords == '':
-            return '请输入关键字'
+        return await session.send('缺少关键字', at_sender=True)
 
     url = 'http://music.163.com/api/search/pc'
     headers={
