@@ -1,1 +1,1 @@
-__all__ = ['notice']
+__all__ = ['notice', 'help']
