@@ -5,7 +5,7 @@ import aiohttp
 from aiocqhttp.message import Message, MessageSegment
 
 @on_command('song', aliases=('点歌'))
-async def notice(session: CommandSession):
+async def song(session: CommandSession):
     keywords = session.current_arg_text.strip()
 
     if keywords == '':
