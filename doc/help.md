@@ -6,6 +6,7 @@
 - [搜图(ImageSearch)](#image-search)
 - [掷点(roll)](#roll)
 - [点歌(song)](#song)
+- [公主连结ReDive(Pcr)](#pcr)
 
 ### 命令列表
 
@@ -13,6 +14,7 @@
 - [搜图(imagesearch)](#command-imagesearch)
 - [掷点(roll)](#command-roll)
 - [点歌(song)](#command-song)
+- [档线(line)](#command-line)
 
 
 ### 帮助信息
@@ -78,6 +80,23 @@ coc跑团用掷点, d不区分大小写, 参数可缺省, 默认为1个100面。
 使用: `song 关键字`
 
 别名: `song`
+
+权限: `任何人`
+
+---
+
+#### <a name="pcr">点歌</a>:
+
+提供公主连结ReDive国服相关功能
+
+##### <a name="command-line">档线</a>
+
+获取当日早5点档线(5点前算前日), 支持参数分条发送
+档线:3, 10, 20, 50, 200, 600, 1200, 2800, 5000, 10000, 15000, 25000, 40000, 60000
+
+使用: `line 档线`
+
+别名: `档线`
 
 权限: `任何人`
 
